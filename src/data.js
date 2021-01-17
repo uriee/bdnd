@@ -1,14 +1,8 @@
 import { colors } from "@atlaskit/theme";
-import jakeImg from "./assets/jake.png";
-import finnImg from "./assets/finn.png";
-import bmoImg from "./assets/bmo.png";
-import princessImg from "./assets/princess.png";
 
-const jake = {
+const Avaiable_Rxs = {
   id: "1",
-  name: "Jake",
-  url: "http://adventuretime.wikia.com/wiki/Jake",
-  avatarUrl: jakeImg,
+  name: "Avaiable Rxs",
   colors: {
     soft: colors.Y50,
     hard: colors.Y200
@@ -17,9 +11,7 @@ const jake = {
 
 const BMO = {
   id: "2",
-  name: "BMO",
-  url: "http://adventuretime.wikia.com/wiki/BMO",
-  avatarUrl: bmoImg,
+  name: "Tx 1",
   colors: {
     soft: colors.G50,
     hard: colors.G200
@@ -28,9 +20,7 @@ const BMO = {
 
 const finn = {
   id: "3",
-  name: "Finn",
-  url: "http://adventuretime.wikia.com/wiki/Finn",
-  avatarUrl: finnImg,
+  name: "Tx 2",
   colors: {
     soft: colors.B50,
     hard: colors.B200
@@ -39,16 +29,14 @@ const finn = {
 
 const princess = {
   id: "4",
-  name: "Princess bubblegum",
-  url: "http://adventuretime.wikia.com/wiki/Princess_Bubblegum",
-  avatarUrl: princessImg,
+  name: "Tx 3",
   colors: {
     soft: colors.P50,
     hard: colors.P200
   }
 };
 
-export const authors = [jake, BMO, finn, princess];
+export const authors = [Avaiable_Rxs, BMO, finn, princess];
 
 export const quotes = [
   {
@@ -60,12 +48,12 @@ export const quotes = [
     id: "2",
     content:
       "Sucking at something is the first step towards being sorta good at something.",
-    author: jake
+    author: Avaiable_Rxs
   },
   {
     id: "3",
     content: "You got to focus on what's real, man",
-    author: jake
+    author: Avaiable_Rxs
   },
   {
     id: "4",
@@ -94,7 +82,7 @@ export const quotes = [
   },
   {
     id: "9",
-    content: "Don't you always call sweatpants 'give up on life pants,' Jake?",
+    content: "Don't you always call sweatpants 'give up on life pants,' Avaiable_Rxs?",
     author: finn
   },
   {

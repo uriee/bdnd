@@ -126,7 +126,6 @@ export default class QuoteItem extends React.PureComponent {
         {...provided.draggableProps}
         {...provided.dragHandleProps}
       >
-        <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
         <Content>
           <BlockQuote>{quote.content}</BlockQuote>
           <Footer>
