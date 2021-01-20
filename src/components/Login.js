@@ -6,18 +6,24 @@ import {
     withRouter
   } from "react-router-dom"; 
 import {postData} from "../Util/Util";
-  
+import "./Login.css";
+
+let error = "";
+
 const Auth = {
     isAuthenticated: false,
 
-    authenticate(cb) {
-        postData("https://localhost:8443/login",{"user_name" : "test", "pwd": "test1"})
+    authenticate(user_name, pwd, cb) {
+        console.log("~~~",user_name,pwd);
+        postData("https://localhost:8443/login",{"user_name" : user_name, "pwd": pwd})
             //.then(response => response.json())
             .then(response => {
                 if (response.status == 200) {
                     this.isAuthenticated = true;
+                    error = "";
                 } else{
                     console.log("Error: ",response.message);
+                    error = response.message;
                 }
                 
             console.log(response)
@@ -71,14 +77,21 @@ const Auth = {
     );
   }
   
-  
+
   class Login extends Component {
-    state = { redirectToReferrer: false };
+    state = { redirectToReferrer: false,
+          welcomeConnect: false,
+          trueUsername: "",
+          error: "" 
+        };
   
     login = () => {
-      Auth.authenticate(() => {
-        this.setState({ redirectToReferrer: true });
-      });
+        var user_name = document.getElementById("username").value;
+        var pwd = document.getElementById("password").value;
+       
+        Auth.authenticate(user_name, pwd, () => {
+            this.setState({ redirectToReferrer: true, welcomeConnect: true, trueUsername: user_name });
+        });
     };
   
     render() {
@@ -86,13 +99,59 @@ const Auth = {
       let { redirectToReferrer } = this.state;
   
       if (redirectToReferrer) return <Redirect to={from} />;
-  
+  /*
       return (
         <div>
           <p>You must log in to view the page at {from.pathname}</p>
           <button onClick={this.login}>Log in</button>
         </div>
       );
+*/
+      return (
+        <div>
+          {this.state.welcomeConnect ? (
+            <Welcome uName={this.state.trueUsername} />
+          ) :  (
+
+            <div className="main_box">
+
+            <div className="main_box--header">
+              <h2><b>React</b> Login System </h2>
+              <p></p>
+            </div>
+    
+            <div className="main_box--main">
+            <div className="main_box--main--title">
+                <h4>Please Login</h4>
+                <p>Enter your username and password to log on</p>
+              </div>
+              
+              <div className="main_box--main--login">
+              <input
+                type="text"
+                id="username"
+                className="form-control"
+                placeholder="username"
+                autoComplete="false"
+              />
+              <input
+                type="password"
+                id="password"
+                className="form-control"
+                placeholder="password"
+              />
+              <button className="btn btn-success" onClick={this.login}>
+                LOGIN
+              </button>
+          <p>{error}</p>
+            </div>
+
+            </div>
+           </div>
+            
+          )}
+        </div>
+      );      
     }
   }
 
