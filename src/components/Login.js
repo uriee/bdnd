@@ -5,12 +5,27 @@ import {
     Redirect,
     withRouter
   } from "react-router-dom"; 
-
+import {postData} from "../Util/Util";
+  
 const Auth = {
     isAuthenticated: false,
+
     authenticate(cb) {
-      this.isAuthenticated = true;
-      setTimeout(cb, 100); // fake async
+        postData("https://localhost:8443/login",{"user_name" : "test", "pwd": "test1"})
+            //.then(response => response.json())
+            .then(response => {
+                if (response.status == 200) {
+                    this.isAuthenticated = true;
+                } else{
+                    console.log("Error: ",response.message);
+                }
+                
+            console.log(response)
+            cb()
+            })
+            .catch(err => {
+            console.log(err);
+            });
     },
     signout(cb) {
       this.isAuthenticated = false;
