@@ -12,21 +12,31 @@ let error = "";
 
 const Auth = {
     isAuthenticated: false,
-
+    userData : {
+      user_name: "",
+      user_id : 0
+    },
     authenticate(user_name, pwd, cb) {
         console.log("~~~",user_name,pwd);
         postData("https://localhost:8443/login",{"user_name" : user_name, "pwd": pwd})
-            //.then(response => response.json())
             .then(response => {
                 if (response.status == 200) {
                     this.isAuthenticated = true;
+                    this.userData = {
+                      user_name: response.data[0].name,
+                      user_id: response.data[0].id
+                    }
                     error = "";
                 } else{
                     console.log("Error: ",response.message);
                     error = response.message;
+                    this.userData = {
+                      user_name: "",
+                      user_id: 0
+                    }                    
                 }
                 
-            console.log(response)
+            console.log(response,this.userData)
             cb()
             })
             .catch(err => {
@@ -43,7 +53,7 @@ const Auth = {
     ({ history }) =>
       Auth.isAuthenticated ? (
         <p>
-          Welcome!{" "}
+          Welcome! {Auth.userData.user_name}
           <button
             onClick={() => {
               Auth.signout(() => history.push("/"));
@@ -63,7 +73,7 @@ const Auth = {
         {...rest}
         render={props =>
           Auth.isAuthenticated ? (
-            <Component {...props} />
+            <Component {...props} userData={Auth.userData} />
           ) : (
             <Redirect
               to={{

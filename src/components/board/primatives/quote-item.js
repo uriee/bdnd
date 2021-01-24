@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 import { colors } from "@atlaskit/theme";
 import { borderRadius, grid } from "../constants";
 
-const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
+const getBackgroundColor = (isDragging, isGroupedOver, groupColors) => {
   if (isDragging) {
-    return authorColors.soft;
+    return groupColors.soft;
   }
 
   if (isGroupedOver) {
@@ -15,8 +15,8 @@ const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
   return colors.N0;
 };
 
-const getBorderColor = (isDragging, authorColors) =>
-  isDragging ? authorColors.hard : "transparent";
+const getBorderColor = (isDragging, groupColors) =>
+  isDragging ? groupColors.hard : "transparent";
 
 const Container = styled.a`
   border-radius: ${borderRadius}px;
@@ -87,7 +87,7 @@ const Footer = styled.div`
   align-items: center;
 `;
 
-const Author = styled.small`
+const group = styled.small`
   flex-grow: 0;
   margin: 0;
   background-color: ${props => props.colors.soft};
@@ -115,13 +115,13 @@ const QuoteId = styled.small`
 export default class QuoteItem extends React.PureComponent {
   render() {
     const { quote, isDragging, isGroupedOver, provided } = this.props;
-
+    //console.log("props",props);
     return (
       <Container
-        href={quote.author.url}
+        //href={quote.group.url}
         isDragging={isDragging}
         isGroupedOver={isGroupedOver}
-        colors={quote.author.colors}
+        colors={quote.group.colors}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
@@ -129,7 +129,7 @@ export default class QuoteItem extends React.PureComponent {
         <Content>
           <BlockQuote>{quote.content}</BlockQuote>
           <Footer>
-            <Author colors={quote.author.colors}>{quote.author.name}</Author>
+            
             <QuoteId>id:{quote.id}</QuoteId>
           </Footer>
         </Content>

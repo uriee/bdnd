@@ -6,7 +6,7 @@ import { colors } from "@atlaskit/theme";
 import Column from "./column";
 import reorder, { reorderQuoteMap } from "./reorder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { authorQuoteMap } from "./data";
+import { getUnitsState } from "./data";
 
 const ParentContainer = styled.div`
   /* height: ${({ height }) => height}; */
@@ -29,17 +29,30 @@ class Board extends Component {
   };
 
   state = {
-    columns: authorQuoteMap,
-    ordered: Object.keys(authorQuoteMap)
+    columns: [],
+    ordered: []
   };
+
+  async componentDidMount() {
+    const response = await getUnitsState();
+    console.log("RESPONSE",response)
+    if (response) {
+      this.setState({
+        columns: response,
+        ordered: Object.keys(response)
+      });
+    }
+  }
 
   boardRef;
 
   onDragEnd = result => {
+    console.log("on drag 1",result)
     if (result.combine) {
       if (result.type === "COLUMN") {
         const shallow = [...this.state.ordered];
         shallow.splice(result.source.index, 1);
+        console.log("shallow.splice(result.source.index, 1);",shallow.splice(result.source.index, 1));
         this.setState({ ordered: shallow });
         return;
       }
@@ -51,6 +64,7 @@ class Board extends Component {
         ...this.state.columns,
         [result.source.droppableId]: withQuoteRemoved
       };
+      console.log("columns:",columns)
       this.setState({ columns });
       return;
     }
@@ -101,7 +115,9 @@ class Board extends Component {
     const columns = this.state.columns;
     const ordered = this.state.ordered;
     const { containerHeight } = this.props;
-
+    console.log("render: columns",columns)
+    console.log("render: ordered",ordered)
+    console.log("render: containerHeight",containerHeight)
     const board = (
       <Droppable
         droppableId="board"
