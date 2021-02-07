@@ -18,7 +18,7 @@ const Auth = {
     },
     authenticate(user_name, pwd, cb) {
         console.log("~~~",user_name,pwd);
-        postData("https://localhost:8443/login",{"user_name" : user_name, "pwd": pwd})
+        postData("http://10.0.0.240:8443/login",{"user_name" : user_name, "pwd": pwd})
             .then(response => {
                 if (response.status == 200) {
                     this.isAuthenticated = true;
