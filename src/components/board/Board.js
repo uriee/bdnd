@@ -9,8 +9,6 @@ import reorder, { reorderQuoteMap } from "./reorder";
 import { DragDropContext, Droppable, resetServerContext } from "react-beautiful-dnd";
 import { getUnitsState } from "./data";
 import io from 'socket.io-client';
-//const socket = openSocket('http://10.0.0.240:8443',{ transport : ['websocket'] });
-//const io = require("socket.io-client");
 const socket = io("http://10.0.0.240:8443");
 
 socket.emit('hello',{messgae :'hello'});
@@ -23,7 +21,7 @@ const ParentContainer = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: ${colors.B100};
+  /*background-color: ${colors.B100};*/
   /* min-height: 100vh; */
   /* like display:flex but will allow bleeding over the window width */
   /* min-width: 100vw; */
