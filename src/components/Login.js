@@ -11,8 +11,9 @@ import "./Login.css";
 let error = "";
 
 const Auth = {
-    isAuthenticated: false,
-    userData : {
+  
+    isAuthenticated: localStorage.getItem('user_object') ? true : false,
+    userData : localStorage.getItem('user_object') ? JSON.parse(localStorage.getItem('user_object')) : {
       user_name: "",
       user_id : 0
     },
@@ -26,6 +27,7 @@ const Auth = {
                       user_name: response.data[0].name,
                       user_id: response.data[0].id
                     }
+                    localStorage.setItem('user_object',JSON.stringify(this.userData));
                     error = "";
                 } else{
                     console.log("Error: ",response.message);
@@ -34,6 +36,7 @@ const Auth = {
                       user_name: "",
                       user_id: 0
                     }                    
+                    localStorage.removeItem('user_object');
                 }
                 
             console.log(response,this.userData)
@@ -45,6 +48,7 @@ const Auth = {
     },
     signout(cb) {
       this.isAuthenticated = false;
+      localStorage.removeItem('user_object');
       setTimeout(cb, 100);
     }
   };
