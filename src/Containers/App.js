@@ -6,7 +6,7 @@ import {
 import Sidebar from "./Sidebar";
 import About from "../components/About";
 import Home from "../components/Home";
-import { Login,  PrivateRoute, AuthButton } from "../components/Login";
+import { Login,  PrivateRoute } from "../components/Login";
 import Board from "../components/board/Board";
 import "./styles.css";
 
@@ -15,12 +15,10 @@ const App = () =>
     <div className="App">
       <Sidebar />
       <div id="page-wrap">
-          <h2></h2>
+          <h2>Silora R&D App</h2>
        </div>
     </div>
-    <br></br>
-    <br></br>
-    <AuthButton />
+    
       <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/about" component={About} />

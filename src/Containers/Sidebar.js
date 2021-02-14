@@ -1,6 +1,9 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
 import { Link } from "react-router-dom";
+import {AuthButton } from "../components/Login";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faInfo, faNetworkWired } from '@fortawesome/free-solid-svg-icons'  
 
 export default class Sidebar extends React.Component {
   state = {
@@ -17,19 +20,21 @@ export default class Sidebar extends React.Component {
 
   render() {
     return (
-      <Menu
+      <Menu right
+        width= {240}
         isOpen={this.state.menuOpen}
         onStateChange={state => this.handleStateChange(state)}
       >
         <Link onClick={() => this.closeMenu()} className="menu-item" to="/home">
-          Home
+            <FontAwesomeIcon style={{float:'right'}} icon={faHome}/> Home
         </Link>
         <Link onClick={() => this.closeMenu()} className="menu-item" to="/about">
-          About
+            <FontAwesomeIcon style={{float:'right'}} icon={faInfo}/>  About
         </Link>
         <Link onClick={() => this.closeMenu()} className="menu-item" to="/Board">
-          Board
-        </Link>        
+        Routing Board <FontAwesomeIcon style={{float:'right'}} icon={faNetworkWired}/>
+        </Link> 
+        <AuthButton/>       
       </Menu>
     );
   }
