@@ -5,6 +5,8 @@ import {
     Redirect,
     withRouter
   } from "react-router-dom"; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'  
 import {postData} from "../Util/Util";
 import "./Login.css";
 
@@ -57,17 +59,10 @@ const Auth = {
     ({ history }) =>
       Auth.isAuthenticated ? (
         <p>
-          Welcome! {Auth.userData.user_name}
-          <button
-            onClick={() => {
-              Auth.signout(() => history.push("/"));
-            }}
-          >
-            Sign out
-          </button>
+           LogOut <FontAwesomeIcon icon={faSignOutAlt}  onClick={() => {Auth.signout(() => history.push("/")); }}/>
         </p>
       ) : (
-        <p>You are not logged in.</p>
+        <p></p>
       )
   );
   
