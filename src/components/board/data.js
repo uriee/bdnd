@@ -3,12 +3,22 @@ import {postData} from "../../Util/Util";
 
 
 export const getUnitsState = async () =>{
-
- return await postData("http://10.0.0.240:8443/get_units",{"user_id" : 1})
+  let user_id = 0;
+  try{
+    user_id = JSON.parse(localStorage.getItem('user_object')).user_id
+  }catch{
+    console.log("ERROR: no user is loged in");
+  }
+  return await postData("http://10.0.0.240:8443/get_units",{"user_id" : user_id})
   .then(response => {
     
     if (response.status == 200) {
-        const units = response.data
+      console.log(response)
+        const presets = JSON.parse(response.ret.presets)
+        const units = JSON.parse(response.ret.units)
+        
+        console.log("u:",units ,"P",presets)
+        //const presets = response.data.presets
         const txs = units.filter((x)=> x.model == 0).map((x)=> {
           return {...x ,
                   colors: {
@@ -48,7 +58,11 @@ export const getUnitsState = async () =>{
           {}
         );          
         console.log("RES:",txs,rxs,state)
-        return {state : state , txs : groups.map(x=> { return {mac : x.mac, name : x.name}})}
+        return {
+          state : state,
+          txs : groups.map(x=> { return {mac : x.mac, name : x.name}}),
+          presets : presets
+        }
     } else{
         console.log("Error: ",response.message);
     }

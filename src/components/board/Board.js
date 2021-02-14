@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-//import ReactDOM from "react-dom";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/core";
 import { colors } from "@atlaskit/theme";
+//import { Fab, Action } from 'react-tiny-fab';
+import { Fab, Action } from "../fab/index.tsx";
+import SavePreset from "./primatives/SavePreset";
 import Column from "./column";
 import {postData} from "../../Util/Util";
 import reorder, { reorderQuoteMap } from "./reorder";
@@ -39,32 +41,17 @@ class Board extends Component {
     columns: [],
     ordered: [],
     rxs_by_id : {},
+    presets: [],
+    txs: [],
     last_render : 0
   };
 
   fetchData = async (route) => {
-    const {state, txs} = await getUnitsState();
-    //const tx_name = txs.filter(x => x.mac == route.tx)[0]
-
-    console.log("RESPONSE",state)
+    const {state, txs ,presets} = await getUnitsState();
+    
     if (state) {
       let rxs_by_id = {}
       Object.keys(state).map(x => state[x].map( rx => rxs_by_id[rx.id] = {name : rx.name, mac: rx.mac}))
-      /*
-      if (route) {
-      let rx_name = {}
-      Object.keys(state).map(x => state[x].map( rx => {
-        
-        if(rx.mac == route.rx){
-            rx_name = rx.name
-          }
-        })) 
-        console.log("rx_name ",rx_name,"tx_name ",tx_name )  
-      }
-      else{
-        
-      }
-      */
       let ordered = this.state.ordered
       Object.keys(state).map(tx=>{
         if(!ordered.includes(tx)) {
@@ -76,6 +63,8 @@ class Board extends Component {
         columns: state,
         ordered: ordered,
         rxs_by_id: rxs_by_id,
+        presets: presets,
+        txs: txs,
         last_render : new Date()
       });
     }    
@@ -98,6 +87,12 @@ class Board extends Component {
 
   boardRef;
 
+  pushpreset = (preset)=> {
+    this.setState({
+      presets: [...this.state.presets, preset]
+    });
+  }
+  
   changeColumn = (result, simulated) => {
     const rx = this.state.rxs_by_id[result.draggableId] && this.state.rxs_by_id[result.draggableId].name;
     const rx_mac = this.state.rxs_by_id[result.draggableId] && this.state.rxs_by_id[result.draggableId].mac
@@ -200,9 +195,25 @@ class Board extends Component {
 
   onDragEnd = result => this.changeColumn(result,0)
 
+  setPreset = (preset_name) =>{
+    return postData("http://10.0.0.240:8443/set_preset",{"preset_name": preset_name})
+    .then(response => {
+      console.log("SET PRESET",response)
+        if (response.status == 200) {
+          console.log("YES");
+        } else{
+            console.log("Error: ",response.massage);                
+        }       
+    })
+    .catch(err => {
+      console.log(err);
+    });    
+  }
+
   render() {
     const columns = this.state.columns;
     const ordered = this.state.ordered;
+    const presets = this.state.presets;
     const { containerHeight } = this.props;
     const board = (
       <Droppable
@@ -229,9 +240,32 @@ class Board extends Component {
         )}
       </Droppable>
     );
-
+    
+    const current_set = this.state.txs
+      .filter(x=> x.mac)
+      .map(tx=> {
+        return this.state.columns[tx.name].map(rx =>{
+          //current_set.push({tx: tx.mac, rx: rx.mac})
+          return {tx: tx.mac, rx: rx.mac}
+        })
+      })
+      .flat()
+    console.log("PEREE",current_set)
+      
     return (
       <React.Fragment>
+
+      <Fab alwaysShowTitle={true} icon='Preset' event={'click'} mainButtonStyles={{ backgroundColor: '#27ae60'}}>
+
+      {
+          <SavePreset state={current_set} pushpreset={()=> console.log("PPPPPpushpreset")}/>
+      }          
+      {
+        this.state.presets.map(preset => (<Action key={preset.name} onClick={() => this.setPreset(preset.name)}>{preset.name}</Action>))
+      }
+          
+      </Fab>
+
         <DragDropContext onDragEnd={this.onDragEnd}>
           {containerHeight ? (
             <ParentContainer height={containerHeight}>{board}</ParentContainer>
@@ -241,8 +275,8 @@ class Board extends Component {
         </DragDropContext>
         <Global
           styles={css`
-            body {
-              background: ${colors.B200};
+          .css-19q5lcn {
+              background: ${colors.B75};
             }
           `}
         />

@@ -1,0 +1,22 @@
+.SavePreset {
+    font-family: sans-serif;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+    font-size: 62.5%;
+    box-sizing: border-box;
+  }
+
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    outline: none;
+  }
+ 
