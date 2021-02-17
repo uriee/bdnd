@@ -58,8 +58,8 @@ const Auth = {
   const AuthButton = withRouter(
     ({ history }) =>
       Auth.isAuthenticated ? (
-        <p>
-           LogOut <FontAwesomeIcon icon={faSignOutAlt}  onClick={() => {Auth.signout(() => history.push("/")); }}/>
+        <p className="icon-item">
+           <FontAwesomeIcon icon={faSignOutAlt}  onClick={() => {Auth.signout(() => history.push("/")); }}/>
         </p>
       ) : (
         <p></p>
@@ -123,11 +123,6 @@ const Auth = {
           ) :  (
 
             <div className="main_box">
-
-            <div className="main_box--header">
-              <h2><b>React</b> Login System </h2>
-              <p></p>
-            </div>
     
             <div className="main_box--main">
             <div className="main_box--main--title">

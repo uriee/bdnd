@@ -3,8 +3,8 @@ import { slide as Menu } from "react-burger-menu";
 import { Link } from "react-router-dom";
 import {AuthButton } from "../components/Login";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faInfo, faNetworkWired } from '@fortawesome/free-solid-svg-icons'  
-
+import { faHome, faThLarge, faNetworkWired } from '@fortawesome/free-solid-svg-icons'  
+import "./menu.css";
 export default class Sidebar extends React.Component {
   state = {
     menuOpen: false
@@ -20,21 +20,28 @@ export default class Sidebar extends React.Component {
 
   render() {
     return (
-      <Menu right
-        width= {240}
+      <Menu 
+        width= {100}
         isOpen={this.state.menuOpen}
         onStateChange={state => this.handleStateChange(state)}
       >
-        <Link onClick={() => this.closeMenu()} className="menu-item" to="/home">
-            <FontAwesomeIcon style={{float:'right'}} icon={faHome}/> Home
+
+        <Link onClick={() => this.closeMenu()} id="home"  to="/">
+            <FontAwesomeIcon className="icon-item" icon={faHome}/> 
         </Link>
-        <Link onClick={() => this.closeMenu()} className="menu-item" to="/about">
-            <FontAwesomeIcon style={{float:'right'}} icon={faInfo}/>  About
-        </Link>
-        <Link onClick={() => this.closeMenu()} className="menu-item" to="/Board">
-        Routing Board <FontAwesomeIcon style={{float:'right'}} icon={faNetworkWired}/>
+       
+        <Link id="board"  to="/Board">
+        <FontAwesomeIcon className="icon-item" icon={faNetworkWired} onClick={() => this.closeMenu()}/>
         </Link> 
-        <AuthButton/>       
+               
+        
+        <Link id="wall"  to="/VideoWallPresets">
+            <FontAwesomeIcon className="icon-item" icon={faThLarge} onClick={() => this.closeMenu()}/> 
+        </Link>
+        
+        <div className="menu-item">
+        <AuthButton className="icon-item" />       
+        </div>
       </Menu>
     );
   }

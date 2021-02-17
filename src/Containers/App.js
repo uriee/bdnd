@@ -4,24 +4,25 @@ import {
     Route,
   } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import About from "../components/About";
+import VideoWallPresets from "../components/VideoWallPresets";
 import Home from "../components/Home";
 import { Login,  PrivateRoute } from "../components/Login";
 import Board from "../components/board/Board";
 import "./styles.css";
+const logo = "logo_silora.png";
 
 const App = () =>
   <Router>
     <div className="App">
       <Sidebar />
       <div id="page-wrap">
-          <h2>Silora R&D App</h2>
+      <img src={logo} width="300" style={{float : 'right', marginTop : 5,marginBottom : 30, marginRight : 5}}/>
        </div>
     </div>
     
       <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
-      <Route path="/about" component={About} />
+      <PrivateRoute path="/VideoWallPresets" component={VideoWallPresets} />
       <PrivateRoute path="/Board" component={Board} />      
   </Router>;
 
