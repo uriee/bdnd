@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/core";
 import { colors } from "@atlaskit/theme";
-//import { Fab, Action } from 'react-tiny-fab';
 import { Fab, Action } from "../fab/index.tsx";
 import SavePreset from "./primatives/SavePreset";
 import Column from "./column";
@@ -14,6 +13,14 @@ import io from 'socket.io-client';
 const socket = io("http://10.0.0.240:8443");
 
 socket.emit('hello',{messgae :'hello'});
+
+Object.defineProperty(Array.prototype, 'flat', {
+  value: function(depth = 1) {
+    return this.reduce(function (flat, toFlatten) {
+      return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+    }, []);
+  }
+});
 
 const ParentContainer = styled.div`
   /* height: ${({ height }) => height}; */
@@ -245,7 +252,6 @@ class Board extends Component {
       .filter(x=> x.mac)
       .map(tx=> {
         return this.state.columns[tx.name].map(rx =>{
-          //current_set.push({tx: tx.mac, rx: rx.mac})
           return {tx: tx.mac, rx: rx.mac}
         })
       })
